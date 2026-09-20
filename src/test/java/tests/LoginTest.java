@@ -1,54 +1,46 @@
 package tests;
 
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import user.User;
 
+import static enums.TitleNaming.PRODUCTS;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
+import static user.UserFactory.*;
 
 public class LoginTest extends BaseTest {
 
-    @Test
-    public void lockedUserTest() {
-        loginPage.open();
-        loginPage.login("locked_out_user", "secret_sauce");
-
-        assertTrue(loginPage.isErrorVisible(), "Error message does not appear");
-        assertEquals(loginPage.getErrorText(), "Epic sadface: Sorry, this user has been locked out.", "Error text does not match");
+    @DataProvider(name = "incorrectData")
+    public Object[][] loginData() {
+        return new Object[][]{
+                {withLockedPermission(), "Epic sadface: Sorry, this user has been locked out."},
+                {withEmptyUser(), "Epic sadface: Username is required"},
+                {withEmptyPassword(), "Epic sadface: Password is required"},
+                {withRegistrUser(), "Epic sadface: Username and password do not match any user in " +
+                        "this service"}
+        };
     }
 
-    @Test
-    public void emptyUserTest() {
+    @Test(dataProvider = "incorrectData")
+    public void incorrectDataLoginTest(User user, String errorMsg) {
+        System.out.println("incorrectDataLoginTest is running in thread:" + Thread.currentThread().threadId());
+
         loginPage.open();
-        loginPage.login("", "secret_sauce");
+        loginPage.login(user);
 
         assertTrue(loginPage.isErrorVisible(), "Error message does not appear");
-        assertEquals(loginPage.getErrorText(), "Epic sadface: Username is required", "Error text does not match");
-    }
-
-    @Test
-    public void emptyPasswordTest() {
-        loginPage.open();
-        loginPage.login("standard_user", "");
-
-        assertTrue(loginPage.isErrorVisible(), "Error message does not appear");
-        assertEquals(loginPage.getErrorText(), "Epic sadface: Password is required", "Error text does not match");
-    }
-
-    @Test
-    public void registerUserTest() {
-        loginPage.open();
-        loginPage.login("Standard_user", "secret_sauce");
-
-        assertTrue(loginPage.isErrorVisible(), "Error message does not appear");
-        assertEquals(loginPage.getErrorText(), "Epic sadface: Username and password do not match any user in this service", "Error text does not match");
+        assertEquals(loginPage.getErrorText(), errorMsg, "Error text does not match");
     }
 
     @Test
     public void correctUserTest() {
+        System.out.println("correctUserTest is running in thread:" + Thread.currentThread().threadId());
+
         loginPage.open();
-        loginPage.login("standard_user", "secret_sauce");
+        loginPage.login(withAdminPermission());
 
         assertTrue(productsPage.isPageTitleVisible());
-        assertEquals(productsPage.getPageTitle(), "Products");
+        assertEquals(productsPage.getPageTitle(), PRODUCTS.getDisplayName());
     }
 }
