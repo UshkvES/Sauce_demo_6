@@ -17,8 +17,6 @@ public class ProductsTest extends BaseTest {
 
     @Test
     public void checkGoodsAdded() {
-        System.out.println("checkGoodsAdded is running in thread:" + Thread.currentThread().threadId());
-
         loginPage.open();
         loginPage.login(withAdminPermission());
 
@@ -34,6 +32,5 @@ public class ProductsTest extends BaseTest {
         assertTrue(productsPage.isNumberVisible());
         assertEquals(productsPage.checkCountersValue(), "4");
         assertEquals(productsPage.checkCountersColor(), "rgba(226, 35, 26, 1)");
-
     }
 }

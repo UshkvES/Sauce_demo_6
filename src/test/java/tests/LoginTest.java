@@ -24,7 +24,6 @@ public class LoginTest extends BaseTest {
 
     @Test(dataProvider = "incorrectData")
     public void incorrectDataLoginTest(User user, String errorMsg) {
-        System.out.println("incorrectDataLoginTest is running in thread:" + Thread.currentThread().threadId());
 
         loginPage.open();
         loginPage.login(user);
