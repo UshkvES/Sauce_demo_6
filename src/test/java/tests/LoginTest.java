@@ -34,8 +34,6 @@ public class LoginTest extends BaseTest {
 
     @Test
     public void correctUserTest() {
-        System.out.println("correctUserTest is running in thread:" + Thread.currentThread().threadId());
-
         loginPage.open();
         loginPage.login(withAdminPermission());
 
