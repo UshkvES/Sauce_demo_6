@@ -1,5 +1,8 @@
 package tests;
 
+import io.qameta.allure.Epic;
+import io.qameta.allure.Owner;
+import io.qameta.allure.Story;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 
@@ -9,9 +12,12 @@ import static enums.TitleNaming.PRODUCTS;
 import static org.testng.Assert.*;
 import static user.UserFactory.withAdminPermission;
 
+@Epic("Корзина")
+@Owner("Элина Ушакова, @Ushkv_ES")
 public class CartTest extends BaseTest {
     SoftAssert soft = new SoftAssert();
 
+    @Story("Отображение добавленных товаров в корзине")
     @Test
     public void checkGoodsInCart() {
         List<String> goodsList =
