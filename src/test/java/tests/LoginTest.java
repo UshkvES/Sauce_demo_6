@@ -1,5 +1,6 @@
 package tests;
 
+import io.qameta.allure.*;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import user.User;
@@ -9,6 +10,9 @@ import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertTrue;
 import static user.UserFactory.*;
 
+@Epic("Демо-стенд интернет-магазина SauceDemo")
+@Owner("Элина Ушакова, @Ushkv_ES")
+@Feature("Авторизация пользователя")
 public class LoginTest extends BaseTest {
 
     @DataProvider(name = "incorrectData")
@@ -22,6 +26,7 @@ public class LoginTest extends BaseTest {
         };
     }
 
+    @Story("Авторизация с некорректными данными")
     @Test(dataProvider = "incorrectData")
     public void incorrectDataLoginTest(User user, String errorMsg) {
 
@@ -32,6 +37,8 @@ public class LoginTest extends BaseTest {
         assertEquals(loginPage.getErrorText(), errorMsg, "Error text does not match");
     }
 
+    @Story("Авторизация с корректными данными")
+    @Severity(SeverityLevel.BLOCKER)
     @Test
     public void correctUserTest() {
         loginPage.open();
