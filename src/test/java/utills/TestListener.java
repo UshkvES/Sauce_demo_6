@@ -60,5 +60,4 @@ public class TestListener implements ITestListener {
     public static byte[] takeScreenshot(WebDriver driver) {
         return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
     }
-
 }
